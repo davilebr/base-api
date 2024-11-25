@@ -1,0 +1,24 @@
+#!/bin/bash
+
+NC='\033[0m'
+BOrange='\033[48;5;202;97m'
+BRed='\033[1;97;41m'
+BGreen='\033[1;32m'
+
+# LaraDumps check dirty
+echo -e "${BOrange}LaraDumps Check${NC}"
+./vendor/bin/laradumps check --dirty=true --dir=app,routes,resources,tests --text=dump,dd --ignore=dumpTo,Dump
+
+STATUS_CODE=$?
+if [ $STATUS_CODE -ne 0 ]; then
+    echo -e "${BRed}1.... LaraDumps Check --dirty${NC}"
+    exit 1
+fi
+
+# Laravel Pint dirty
+echo -e "${BOrange}Laravel Pint Fix${NC}"
+PINT=$(php ./vendor/bin/pint)
+
+if echo "$PINT" | grep -q "Fixed"; then
+    echo -e "${BGreen}Attention: Some files have been patched by Laravel Pint.${NC}"
+fi
