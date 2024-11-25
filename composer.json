@@ -67,7 +67,7 @@
             "./vendor/bin/phpstan analyse",
             "./vendor/bin/pest"
         ],
-        "fix" : [
+        "lint": [
             "./vendor/bin/pint"
         ],
         "model-helper": [
